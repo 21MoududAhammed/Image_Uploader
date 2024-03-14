@@ -1,12 +1,20 @@
 import { useState } from "react";
 import uploadIcon from "../assets/upload-icon.jpg";
 import editIcon from "../assets/edit.png";
+import { useRef } from "react";
 export default function ImageUploader() {
-  const [avatar, setavatar] = useState(uploadIcon);
+  const [avatar, setAvatar] = useState(uploadIcon);
+  const uploadImageRef = useRef();
 
   const handleUploadImage = (e) => {
     e.preventDefault();
-    console.log(e.target.value);
+    uploadImageRef.current.click();
+  };
+
+  const handleDisplayImage = () => {
+    const uploadedImage = uploadImageRef.current.files[0];
+    const cashedURL = URL.createObjectURL(uploadedImage);
+    setAvatar(cashedURL);
   };
 
   return (
@@ -22,7 +30,12 @@ export default function ImageUploader() {
             />
           </button>
 
-          <input type="file" name="" id="" hidden />
+          <input
+            ref={uploadImageRef}
+            type="file"
+            onChange={handleDisplayImage}
+            hidden
+          />
         </form>
       </div>
     </div>
